@@ -1,5 +1,5 @@
 import requests
-import pprint
+import os
 
 host = 'https://anypoint.mulesoft.com'
 api_login = '/accounts/login'
@@ -8,11 +8,21 @@ api_environments = '/accounts/api/cs/organizations/{orgId}/environments'
 api_apis = '/apimanager/api/v1/organizations/{orgId}/environments/{envId}/apis'
 api_logout = '/accounts/api/logout'
 
+print(os.environ)
+
 # get user id
-user = input("Enter Anypoint User Name:")
+user = os.environ.get('ANYPOINT_USERNAME',"")
+if user == "":
+    user = input("Enter Anypoint User Name:")
+else:
+    print('Using ANYPOINT_USERNAME "{}'.format(user))
 
 # get password
-pw = input("Enter password:")
+pw = os.environ.get('ANYPOINT_PASSWORD',"")
+if pw == "":
+    pw = input("Enter password:")
+else:
+    print('Using ANYPOINT_PASSWORD "***"')
 
 #login
 r = requests.post(host+api_login,json={'username':user,'password':pw})
